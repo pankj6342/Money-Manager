@@ -85,7 +85,7 @@ if(element.data){
              />
              <div className="inline">
                <h5>{value.name}</h5>
-               <span>you owe ${-(value.data.ammount)}</span>
+               <span className="red">you owe ${-(value.data.ammount)}</span>
              </div>
            </li>
             )}
@@ -117,7 +117,7 @@ if(element.data){
             />
             <div className="inline">
               <h5>{value.name}</h5>
-              <span>owes you ${value.data.ammount}</span>
+              <span className="green">owes you ${value.data.ammount}</span>
             </div>
           </li>
             )}

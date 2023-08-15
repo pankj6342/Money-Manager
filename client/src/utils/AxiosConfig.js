@@ -1,6 +1,6 @@
 import axios from 'axios';
 export const instance = axios.create({
-    baseURL: 'http://localhost:1234/',
+    baseURL: `${process.env.NODE_ENV ==='production' ? process.env.BACKEND_URI : "http://localhost:1234/"}`,
     timeout: 4000,
 //     headers: {'reqcomingfrom': 'web','lang':'en','accept':'json','apikey':'ABCD123'}
 //   

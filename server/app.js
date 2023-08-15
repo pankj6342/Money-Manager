@@ -8,7 +8,7 @@ app.use(bodyParser.json());
 
 app.use(require('./utils/cors'));
 
-app.use("/",userRoute);
+app.use(`${process.env.NODE_ENV === 'production' ? process.env.BACKEND_URI : '/'}`,userRoute);
 app.listen(process.env.PORT || 1234,(err)=>{
     if(err){
         console.log("Error in sever Staring ",err);

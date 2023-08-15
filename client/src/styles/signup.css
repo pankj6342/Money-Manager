@@ -1,15 +1,9 @@
 .signup{
   display: flex;
- 
   margin-top: 8%;  
   align-items: center; 
-  justify-content: center;
- 
-}
+  justify-content: space-evenly;
 
-.signup-logo{
-  margin-right: 100px;
-  height: 300px;
 }
 
 .signup-form h3{

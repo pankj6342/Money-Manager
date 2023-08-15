@@ -7,7 +7,7 @@
 .landingNav{
   height: 55px;
   width: 100%;
-  background:#5BC5A7;
+  background:#5d36dc;
   color: white;
   
   
@@ -32,7 +32,7 @@
   outline: none;
 }
 .loginBtn{
-  background: #57C6A8;
+  background: #542adf;
   font-size:  15px;
   margin-right: 15px;
 }
@@ -55,9 +55,31 @@
   
 }
 
-.landing-heading{
+.landing-bg{
+  min-width: 95vw;
+  min-height: 100vh;
+  filter: blur(8px);
+  -webkit-filter: blur(8px);
+
+  /* Full height */
+  /* height: 100%; */
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
   text-align: center;
-  margin-top: 25px; 
+  background-image: url("../images/bg.jpg"); 
+}
+.landing-home{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  z-index: 2;
+  top: 30%;
+  left: 20%;
 }
 
 .landing-logo{
@@ -81,14 +103,24 @@
   width: 100%;
   height: 500px;
   display: flex;
+  justify-items: center;
+  align-items: center;
+  margin-top: 10px;
+  padding:10px;
 }
-
+.langing-text{
+  text-decoration: solid;
+  color: rgb(255, 255, 255);
+  text-shadow: rgb(0, 0, 0) 2px 0 10px;
+  /* -webkit-text-stroke-width: 1px; */
+  /* -webkit-text-stroke-color: rgb(70, 70, 70); */
+}
 
 .landing-img{
   height: 500px;
-  margin: 0px 150px 0px 150px;
-  
+  margin: 0px 150px 0px 150px; 
 }
+
 .landing-content{
   margin-top: 55px;
   font-size: 25px;
@@ -105,13 +137,13 @@
   margin-bottom: 15px;
 }
 .landing-content i{
-  color: #57C6A8;
+  color: #5d36dc;
 }
 .landing-button{
   float: right;
   padding: 12px 15px 12px 15px;
   color: white;
-  background: #57C6A8;
+  background: #5d36dc;
   border-radius: 5px;
   margin-top: 15px;
   font-size: 20px;

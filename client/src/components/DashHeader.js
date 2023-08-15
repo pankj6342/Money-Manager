@@ -7,7 +7,7 @@ import '../styles/dashHeader.css'
     
     return (
         <nav className = "DashboardNav fixed-top">
-        <NavLink to = "/Dashboard"><h3 className = "landing-name">S P L I T W I S E</h3></NavLink> 
+        <NavLink to = "/Dashboard"><h3 className = "landing-name">MONEY MANAGER</h3></NavLink> 
      
      <div className = "Dashfloat">
      <NavLink to = "/login"><button className = "logoutbtn" onClick = {()=>{

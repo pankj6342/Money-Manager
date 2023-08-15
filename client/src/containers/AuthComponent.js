@@ -3,8 +3,6 @@ import {instance} from '../utils/AxiosConfig';
 import { withRouter } from "react-router-dom";
 import {userActionCreator} from "../redux/actionCreator/userAction";
 import { store } from "../redux/store";
-// import { mathActionCreator } from '../models/actionCreators/mathactioncreator';
-// import { store } from '../models/store';
 
  class AuthComponent extends React.Component{
     constructor(props){
@@ -32,10 +30,6 @@ import { store } from "../redux/store";
         
          var action = userActionCreator(user,'AddUser');
          store.dispatch(action);
-
-
-        //  var action = mathActionCreator(user,'+');
-        //  store.dispatch(action);
      }).catch(err =>{
          localStorage.removeItem('jwtToken');
          this.props.history.push('/login');

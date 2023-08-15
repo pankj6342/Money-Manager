@@ -80,7 +80,7 @@
     color: white;
 }
 .settle{
-    background: #5BC5A7;
+    background: #542adf;
 }
 .expense{
     background: #FF652F;
@@ -104,6 +104,9 @@
 }
 .green{
  color: #5BC5A7;
+}
+.red {
+    color :#b34b4b
 }
 .totalCollection{
     display: flex;
@@ -133,9 +136,6 @@ li{
     margin: 0px;
     font-size: 16px;
     font-weight: normal;
-}
-.inline span{
-    color: #5BC5A7;
 }
 .borders{
     width: 50%;

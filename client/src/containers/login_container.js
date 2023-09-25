@@ -15,6 +15,8 @@ import setAuthorizationToken from "../utils/AxiosConfig";
     }
     Login(){
         // console.log('History is ',this.props.history.push("/Dashboard"));
+        console.log("login", this.input);
+        console.log("hello");
     var pr = instance.post('/login',this.input);
 
     pr.then((response)=>{

@@ -10,7 +10,6 @@ export  class App extends React.Component{
   render(){
     return (
       <div>
-        <Header/>
         <Switch>
           <Route exact path = "/" component = {Landing}></Route>
           <Route exact path = "/login" component = {Login_smart}></Route>

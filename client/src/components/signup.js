@@ -1,11 +1,12 @@
 import React from 'react';
 import '../styles/signup.css';
-import { withRouter } from "react-router-dom";
 
 import { instance } from '../utils/AxiosConfig';
 import Header from './Header';
+import { useNavigate } from 'react-router-dom';
 var obj = {};
 const SignUp = (props) => {
+   const navigate = useNavigate();
    return (
       <>
          <Header/>
@@ -32,7 +33,7 @@ const SignUp = (props) => {
 
                <input id="password" onChange={(event) => {
                   obj[event.target.id] = event.target.value;
-               }} className="form-control" type="text" required />
+               }} className="form-control" type="password" required />
 
                <button onClick={() => {
                   console.log(obj);
@@ -42,10 +43,9 @@ const SignUp = (props) => {
                   else {
                      var pr = instance.post('/signup', obj);
                      pr.then((response) => {
-                        console.log(response.data.Status);
                         if (response.data.Status == "S") {
                            alert("successful Registerd");
-                           props.history.push("/Dashboard");
+                           navigate("/Dashboard");
                         } else if (response.data.Status == "F") {
                            alert("username or Email Id Already exist");
                         }
@@ -59,4 +59,4 @@ const SignUp = (props) => {
    )
 }
 
-export default withRouter(SignUp);
+export default SignUp;

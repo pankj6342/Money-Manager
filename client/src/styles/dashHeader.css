@@ -13,6 +13,11 @@
     width: 100%;
     background:#542adf;
     color: white;
+    padding-right: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
   }
 
   .DashboardNav h3{
@@ -25,17 +30,17 @@
   }
 
 .profile{
-  height: 25px;
-  width: 25px;
-  border-radius: 50%;
-  margin-right: 10px;
+  display: flex;
+  align-items: center;
+  img {
+    height: 30px;
+    border-radius: 50%;
+  }
 }
   .Dashfloat{
-    float: right;
-    position: absolute;
-    top: 2px;
-    right: 10vw;
-    
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
   }
   .Dashfloat button{
     padding: 4px 10px 4px 10px;
@@ -46,12 +51,6 @@
   .Dashfloat button:focus{
     outline: none;
   }
-  .Dashfloat label{
-    font-size:  18px;
-    font-weight: normal;
-  }
-
-
   .logoutbtn{
     background: #FF6337;
     font-size:  12px;

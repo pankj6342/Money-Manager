@@ -1,59 +1,42 @@
-import React from 'react';
-import {instance} from '../utils/AxiosConfig';
-import { withRouter } from "react-router-dom";
-import {userActionCreator} from "../redux/actionCreator/userAction";
-import { store } from "../redux/store";
+import React, { useState, useEffect } from "react";
+import { instance } from "../utils/AxiosConfig";
+import { addFriend, setUser } from "../redux/reducers/userReducer";
+import { useNavigate } from "react-router-dom";
 
- class AuthComponent extends React.Component{
-    constructor(props){
-        super(props);
+function AuthComponent(props) {
+  const navigate = useNavigate();
+  const [userData, setUserData] = useState(undefined);
 
-        this.state = {
-            user: undefined
-        }
+  useEffect(() => {
+    const jwt = localStorage.getItem("jwtToken");
+    if (!jwt) {
+      navigate("/login");
+      return;
     }
-    componentWillMount (){
-        console.log("first")
-     const jwt = localStorage.getItem('jwtToken');
-     if(!jwt){
-         this.props.history.push('/login');
-     }
-    
-     instance.get('/getUser', {headers : {Authorization: `Bearer ${jwt}`}}).then(res => {
-         console.log("and here Iam");
-        console.log(res) ;
-        this.state.user = res.data.userdata.doc;
+
+    instance
+      .get("/getUser", { headers: { Authorization: `Bearer ${jwt}` } })
+      .then((res) => {
+        console.log("and here Iam");
+        console.log(res);
+        setUserData(res.data.userdata.doc);
+        setUser(res.data.userdata.doc);
         localStorage.username = res.data.userdata.doc.username;
-         var user = res.data.userdata.doc;
-        
-         this.setState({user:user});
-        
-         var action = userActionCreator(user,'AddUser');
-         store.dispatch(action);
-     }).catch(err =>{
-         localStorage.removeItem('jwtToken');
-         this.props.history.push('/login');
-     });
-     
-    }
+      })
+      .catch((err) => {
+        localStorage.removeItem("jwtToken");
+        navigate('/login');
+      });
+  }, []); // Empty dependency array to run only on mount
 
-    render(){
-        {console.log("hello",this.state.user)}
-        if(this.state.user === undefined){
-            return(
-                <div>
-                <h1>loading..........</h1>
-            </div>
-            
-            )
-        }
 
-        return(
-            <div>
-                {this.props.children}
-            </div>
-        )
-    }
+  return userData === undefined ? (
+    <div>
+      <h1>loading..........</h1>
+    </div>
+  ) : (
+    <div>{props.children}</div>
+  );
 }
 
-export default withRouter(AuthComponent);
+export default AuthComponent;

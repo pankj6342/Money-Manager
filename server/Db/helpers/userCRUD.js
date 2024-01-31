@@ -1,101 +1,107 @@
-const userModel = require('../models/UserSchema');
-const jwt = require('jsonwebtoken');
+const mongoose = require("mongoose");
+const userModel = require("../models/UserSchema2");
+const jwt = require("jsonwebtoken");
 
 const userOperation = {
-AddUser(userObject, response){
-    userModel.create(userObject,(err,doc)=>{
-       if(err){
-           console.log("Error is ",err);
-           response.json({Status: "F"});
-       }else{
-           response.json({Status: "S", record: doc});
-       }
-    })
-},
+  AddUser(userObject, response) {
+    userModel.create(userObject, (err, doc) => {
+      if (err) {
+        console.log("Error is ", err);
+        response.json({ Status: "F" });
+      } else {
+        response.json({ Status: "S", record: doc });
+      }
+    });
+  },
 
-login(userObject,response){
-    userModel.findOne(userObject,(err,doc)=>{
-        if(err){
-            console.log(err);
-        }else{
-            if(doc){
-                jwt.sign({doc}, 'secretkey', { expiresIn: '1h' }, (err, token) => {
-                response.json({Status: "S",msg: "welcome bro " + doc.username,token: token});
-                });
-            }else{
-                response.json({Status: "F",msg: "Invalid username or password"});
-            }
+  login(userObject, response) {
+    userModel.findOne(userObject, (err, doc) => {
+      if (err) {
+        console.log(err);
+      } else {
+        if (doc) {
+          jwt.sign({ doc }, "secretkey", { expiresIn: "1h" }, (err, token) => {
+            response.json({
+              success: true,
+              username: doc.username,
+              token: token,
+            });
+          });
+        } else {
+          response.json({ success: false, msg: "Invalid username or password" });
         }
-    })
-},
+      }
+    });
+  },
 
-async AddFriend(userObject,response){
-  var check = await this.Find(userObject.username);
-  console.log(check);
-  if(check){
-      userModel.findOneAndUpdate({username: userObject.defaultUser},
-        {"$push": {"friends" : userObject.username,"expensis":{"name": userObject.username,"data": {}}}},{"new": true},
-        (err,doc)=>{
-            if(err){
-                console.log(err);
-            }else{
-                //send mail to check.email => that userObject.default user has added you as his friend;
-             
-                response.json({Status: "S",msg: "Added succesfully",doc: doc});
-            }
+  async AddFriend(userObject, response) {
+    try {
+      const {username, defaultUser} = userObject;
+      // Find the user document
+      const friend = await userModel.findOne({username});
+      // Check if the user exists
+      if (!friend) {
+        throw new Error(`userModel with username ${username} not found`);
+      }
+      const user = await userModel.findOne({ username: defaultUser });
+       // Check if the friend is already added
+      if (user.friends.has(username)) {
+        throw new Error(`Friend ${username} already exists`);
+      }  
+      // Add the friend with a net balance of 0
+      user.friends.set(username, 0); 
+      friend.friends.set(defaultUser, 0);
+      // Save the updated user document
+      await friend.save();
+      const savedUser = await user.save();
+      console.log(`Friend ${username} added successfully for user ${username}`);
+      response.json({success: true, doc: savedUser});
+    } catch(e){
+      response.json({success: false, error: e?.message});
+    }
+  },
+
+  Find(username) {
+    return userModel.findOne({ username }, function (err, doc) {
+      if (err) {
+        console.log(err);
+          return false;
+      } else {
+        if (doc) {
+          console.log(doc);
+          return doc;
+        } else {
+          console.log("not Found");
+           return false;
         }
-        )
-  }else{
-      console.log("status Fail")
-      response.json({Status:"F",msg: "your friend is not registerd yet"});
-  }
-},
-Find(username){
-    return userModel.findOne({username},function(err,doc){
-        if(err){
-           console.log(err); 
-        //   return false;
-        }else{
-            if(doc){
-                console.log(doc);
-                // return true;
-            }else{
-            console.log("not Found");
-            //  return false;
-            }
-        }
-    })
-
-},
-
-AddExp(userObject,response){
-   
- userModel.findOneAndUpdate({username: userObject.username,"expensis.name":userObject.user},{'$set' : {"expensis.$.data.desc": userObject.inp.description,"expensis.$.data.date": userObject.inp.date},"$inc":{"expensis.$.data.ammount": userObject.inp.amount}},{"new": true},
- (err,doc)=>{
-     if(err){
-         console.log(err);
-     }else{
-         //send mail to check.email => that userObject.default user has added you as his friend;
-        console.log(doc);
-         response.json({Status: "S",msg: "Added succesfully",doc: doc});
-     }
- })
-},
-
-settle(userObject,response){
-     userModel.findOneAndUpdate({username: userObject.username,"expensis.name":userObject.user},{"$inc":{"expensis.$.data.ammount": userObject.val}},{"new": true},
-    (err,doc)=>{
-        if(err){
-            console.log(err);
-        }else{
-            //send mail to check.email => that userObject.default user has added you as his friend;
-           console.log(doc);
-            response.json({Status: "S",msg: "Added succesfully",doc: doc});
-        }
-    })
-}
-
-}
-
+      }
+    });
+  },
+  async UpdateNetBalance(creditor, debt, amount, expenseId) {
+    const session = await mongoose.startSession();
+    try {
+      await session.withTransaction(async () => {
+        // Update the creditor's and debt's balances and append the expenseId to their expenses arrays in parallel
+        await Promise.all([
+          userModel.updateOne(
+            { username: creditor },
+            { $inc: { [`friends.${debt}`]: amount }, $push: { expenses: expenseId ? expenseId : null } },
+            { session }
+          ),
+          userModel.updateOne(
+            { username: debt },
+            { $inc: { [`friends.${creditor}`]: -amount }, $push: { expenses: expenseId ? expenseId : null } },
+            { session }
+          )
+        ]);
+      });
+  
+      session.endSession();
+    } catch (error) {
+      session.endSession();
+      throw error;
+    }
+  },
+};
 
 module.exports = userOperation;

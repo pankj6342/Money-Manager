@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+body{
+  background: #1B262C;
+  color:whitesmoke;
+}
+.balance-table {
+    /* Basic styling */
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+    margin-bottom: 20px; /* Add some space below the table */
+  }
+  .red-row{
+    background-color: '';
+    color:#EF476F;
+    /* text-shadow: 1px 1px 1px rgb(50, 50, 50); */
+  }
+  .green-row{
+    background-color: '';
+    color:#06D6A0;
+    /* text-shadow: 1px 1px 1px rgb(50, 50, 50); */
+  }
+  th,
+  td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left; /* Default alignment for headers and cells */
+  }
+  
+  th {
+    background-color: #000000; /*Lighter background for headers*/
+    font-weight: bold;
+  }
+  
+  

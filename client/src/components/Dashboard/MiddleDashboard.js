@@ -1,44 +1,53 @@
-import React from "react";
-import { connect } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { connect, useSelector } from "react-redux";
 import "../../styles/Dashboard.css";
-var exp = 0;
-var owe = [];
-var owed = [];
-function calculate(props){
-   exp = 0;
-   owe = [];
-   owed = [];
-   if(props.user.expensis){
-     console.log("****************************m kitni barri hu *********************************");
-   props.user.expensis.forEach(element => {
-if(element.data){
-  exp += parseInt(element.data.ammount);
-      if(element.data.ammount>0){
-        
-        console.log("element.data.ammount>0")
-        owed.push(element);
-        console.log(owed);
-      }else if(element.data.ammount<0){
-        console.log("element.data.ammount<0");
-        // element.data.ammount = -(element.data.ammount);
-        owe.push(element);
-        // owe[owe.length].data.ammount = -( owe[owe.length].data.ammount );
-        console.log(owe);
+
+const Middle = (props) => {
+  const [state, setState] = useState({
+    toBeGiven: [],
+    toBeTaken: [],
+    totalToBeGiven: 0,
+    totalToBeTaken: 0,
+  });
+  const { user } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    calculate();
+  }, [user]);
+
+  function calculate() {
+    let toGive = [];
+    let toTake = [];
+    let giveTotal = 0;
+    let takeTotal = 0;
+    for (const [key, value] of Object.entries(user?.friends ?? {})) {
+      if (value > 0) {
+        toTake.push({ username: key, amount: value });
+        takeTotal += value;
+      } else {
+        toGive.push({ username: key, amount: -value });
+        giveTotal += value;
       }
     }
-   });
+    setState({
+      toBeGiven: toGive,
+      toBeTaken: toTake,
+      totalToBeGiven: giveTotal.toFixed(2),
+      totalToBeTaken: takeTotal.toFixed(2),
+    });
   }
-  // return exp;
-}
 
- const Middle = props => {
   return (
     <div className="Middle">
-      {calculate(props)}
-      
       <div className="MidDash">
         <div className="DashHeader">
           <h3>Dashboard</h3>
+          <button
+            className="btn float-right create-group"
+            onClick={props.createGroup}
+          >
+            Create Group
+          </button>
           <button className="btn float-right settle" onClick={props.settle}>
             Settle up
           </button>
@@ -50,15 +59,17 @@ if(element.data){
         <div className="total">
           <div className="fitting">
             <label htmlFor="">total balance</label>
-            <p className="green">$ {exp}</p>
+            <p className="green">
+              $ {state.totalToBeTaken - state.totalToBeGiven}
+            </p>
           </div>
           <div className="fitting">
             <label htmlFor="">you owe</label>
-            <p style = {{color:"red"}}>$ {(exp<0)?exp:0}</p>
+            <p style={{ color: "red" }}>$ {state.totalToBeGiven}</p>
           </div>
           <div className="fitting">
             <label htmlFor="">you are owed</label>
-            <p className="green">$ {(exp>0)?exp:0}</p>
+            <p className="green">$ {state.totalToBeTaken}</p>
           </div>
         </div>
       </div>
@@ -73,69 +84,52 @@ if(element.data){
           </label>
         </div>
       </div>
-      <div className = "flex">
+      <div className="flex">
         <div className="float-left ml-3 borders">
           <ul>
-            {(owe.length == 0)?<li>You do not owe anything</li>:owe.map(value=>
-             <li>
-             <img
-               className="imgs"
-               src={require("../../images/person-profile.png")}
-               alt="" align="left"
-             />
-             <div className="inline">
-               <h5>{value.name}</h5>
-               <span className="red">you owe ${-(value.data.ammount)}</span>
-             </div>
-           </li>
+            {state.toBeGiven.length === 0 ? (
+              <li>You do not owe anything</li>
+            ) : (
+              state.toBeGiven.map((value, key) => (
+                <li key={key}>
+                  <img
+                    className="imgs"
+                    src={require("../../images/person-profile.png")}
+                    alt=""
+                    align="left"
+                  />
+                  <div className="inline">
+                    <h5>{value.username}</h5>
+                    <span className="red">you owe ${value.amount}</span>
+                  </div>
+                </li>
+              ))
             )}
-            {/* <li>
-              <img
-                className="imgs"
-                src={require("../../images/person-profile.png")}
-                alt="" align="left"
-              />
-              <div className="inline">
-                <h5>Ram</h5>
-                <span>you owe $500</span>
-              </div>
-            </li> */}
           </ul>
         </div>
 
-
-
         <div>
           <ul>
-          {(owed.length == 0)?<li>You do not owe anything</li>:owed.map(value=>
-            <li>
-            <img
-              className="imgs"
-              src={require("../../images/person-profile.png")}
-              alt=""
-              align="left"
-            />
-            <div className="inline">
-              <h5>{value.name}</h5>
-              <span className="green">owes you ${value.data.ammount}</span>
-            </div>
-          </li>
+            {state.toBeTaken.length === 0 ? (
+              <li>You do not owe anything</li>
+            ) : (
+              state.toBeTaken.map((value) => (
+                <li>
+                  <img
+                    className="imgs"
+                    src={require("../../images/person-profile.png")}
+                    alt=""
+                    align="left"
+                  />
+                  <div className="inline">
+                    <h5>{value.username}</h5>
+                    <span className="green">
+                      owes you ${value.amount.toFixed(2)}
+                    </span>
+                  </div>
+                </li>
+              ))
             )}
-
-            {/* <li>
-              <img
-                className="imgs"
-                src={require("../../images/person-profile.png")}
-                alt=""
-                align="left"
-              />
-              <div className="inline">
-                <h5>Ram</h5>
-                <span>you owe $500</span>
-              </div>
-            </li> */}
-           
-            
           </ul>
         </div>
       </div>
@@ -143,12 +137,4 @@ if(element.data){
   );
 };
 
-const mapStateToProps = state => {
-  console.log("state is  ", state);
-  return {
-    user: state.user
-  };
-};
-
-const fn = connect(mapStateToProps);
-export default fn(Middle);
+export default Middle;

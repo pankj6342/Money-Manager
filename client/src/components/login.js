@@ -1,16 +1,15 @@
 import React from 'react';
-import '../styles/signup.css';
+// import '../styles/signup.css';
+import '../styles/index.css'
 import Header from './Header';
 export const Login = (props) => {
   return (
     <div>
       <Header />
-      <div className="container signup">
-
+      <div className="signup bg-red-500">
         <div className="signup-logo">
           <img height="250px" src={require("../images/logo.png")} alt="" />
         </div>
-
 
         <div className="signup-form">
           {/* <form className="signup-form"> */}

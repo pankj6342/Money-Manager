@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Login } from '../components/login';
 import {instance} from '../utils/AxiosConfig';
-import { withRouter } from "react-router-dom";
-import setAuthorizationToken from "../utils/AxiosConfig";
+import { useNavigate } from 'react-router-dom';
 
 const Login_smart = (props)=> {
     const [input, setInput] = useState({});
     const [invalid, setInvalid] = useState(false);
+    const navigate = useNavigate();
 
     function TakeInput(event) {
         setInput({ ...input, [event.target.id]: event.target.value });
@@ -18,14 +18,14 @@ const Login_smart = (props)=> {
         var pr = instance.post('/login', input);
 
         pr.then((response) => {
-            console.log(response.data);
             const token = response.data.token;
-            localStorage.setItem('jwtToken', token)
-
-            if (response.data.Status === 'S') {
-                props.history.push("/Dashboard");
+            console.log('loggedin', response.data);
+            localStorage.setItem('jwtToken', token);
+            localStorage.setItem('username', response.data.username);
+            if (response.data.success) {
+                navigate("/Dashboard");
             }
-            else if (response.data.Status === 'F') {
+            else {
                 setInvalid(true);
             }
         })
@@ -36,4 +36,4 @@ const Login_smart = (props)=> {
     )
 }
 
-export default withRouter(Login_smart);
+export default Login_smart;

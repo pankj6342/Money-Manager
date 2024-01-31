@@ -1,32 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
 import "../../../styles/frndPop.css";
 import { instance } from "../../../utils/AxiosConfig";
-import { store } from "../../../redux/store";
-import { connect } from "react-redux";
-import { actionCreator } from "../../../redux/actions/action";
-import { SET_USER } from "../../../redux/actions/actionTypes";
 import { useSelector, useDispatch } from "react-redux";
 import { addFriend, setUser } from "../../../redux/reducers/userReducer";
+import { addToGroup } from "../../../redux/reducers/groupReducer";
 
-const Friend = (props) => {
-  var takeInp = { defaultUser: "" };
+const AddGroupMember = (props) => {
+  const [member, setMember] = useState("");
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
+  const { groupData } = useSelector((state) => state.group);
+  console.log({groupData});
   return (
     <div className="friendPopup">
       <div className="frnd-content">
         <div className="frnd-header">
-          <span>Add a Friend</span>
-          <button className="float-right" onClick={props.friend}>
+          <span>Add a Member to {groupData.name}</span>
+          <button className="float-right" onClick={props.onClickHandler}>
             <i class="fas fa-times" />
           </button>
         </div>
 
         <input
-          id="username"
+          id="member_username"
           onChange={(event) => {
-            takeInp[event.target.id] = event.target.value;
+            setMember(event.target.value);
           }}
+          value={member}
           placeholder="Type a username"
           className="frnd-name"
           type="text"
@@ -36,32 +36,35 @@ const Friend = (props) => {
           <button
             className="btn Add"
             onClick={() => {
-              takeInp.defaultUser = user.username;
-
-              if (takeInp.username == user.username) {
+              //   takeInp.defaultUser = user.username;
+              if (member == user.username) {
                 alert("you can't add yourself as your Friend");
                 return;
               }
               instance
-                .post("/AddFriend", takeInp)
+                .post("group/addToGroup", {
+                  memberIds: [member],
+                  groupId: groupData.id,
+                  groupName: groupData.name,
+                })
                 .then((resp) => {
                   if (resp.data.success) {
-                    dispatch(setUser(resp.data.doc));
+                    dispatch(addToGroup(resp.data.member));
                   } else {
-                    alert('Failed to add friend');
+                    alert("Failed to add member");
                     console.log("user not found");
                   }
                 })
                 .catch((err) => {
-                  alert('Failed to add friend');
+                  alert("Failed to add member");
                   console.log(err);
                 });
             }}
           >
-            Add Friend
+            Add Member
           </button>
 
-          <button className="btn cut" onClick={props.friend}>
+          <button className="btn cut" onClick={props.onClickHandler}>
             Close
           </button>
         </div>
@@ -70,4 +73,4 @@ const Friend = (props) => {
   );
 };
 
-export default Friend;
+export default AddGroupMember;

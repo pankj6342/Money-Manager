@@ -4,7 +4,6 @@ import FriendList from './FriendList'
 export const AddFriend = (props)=>{
     return(
         <div className = "AddFriend">
-         
          <div className = "content">
          <div className = "friendHeader" >
             <label htmlFor="">FRIENDS</label>

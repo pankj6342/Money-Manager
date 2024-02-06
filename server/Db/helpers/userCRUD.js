@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const userModel = require("../models/UserSchema2");
 const jwt = require("jsonwebtoken");
 

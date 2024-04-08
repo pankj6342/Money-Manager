@@ -67,7 +67,7 @@ export const DashHeader = () => {
           className=""
           src={require("../images/person-profile.png")}
           alt=""
-          srcset=""
+          srcSet=""
         />
         <label htmlFor="">{user.username}</label>
         </div>

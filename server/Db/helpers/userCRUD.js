@@ -1,23 +1,22 @@
 const mongoose = require("mongoose");
 const userModel = require("../models/UserSchema2");
 const jwt = require("jsonwebtoken");
-const { response } = require("express");
 
 const userOperation = {
-  AddUser(userObject, response) {
-    userModel.create(userObject, (err, doc) => {
-      if (err) {
-        console.log("Error is ", err);
-        response.json({ Status: "F" });
-      } else {
-        response.json({ Status: "S", record: doc });
-      }
-    });
+  async AddUser(userObject, response) {
+    try {
+      const doc = await userModel.create(userObject);
+      response.json({ Status: "S", record: doc });
+    } catch (err) {
+      console.error("Error is ", err);
+      response.json({ Status: "F" });
+    }
   },
 
   async login(userObject, response) {
     try {
-      let user = await userModel.findOne({ id: userObject.username });
+      console.log({userObject});
+      let user = await userModel.findOne({ email: userObject.email });
       if (user) {
         jwt.sign({ user }, "secretkey", { expiresIn: "1h" }, (err, token) => {
           response.json({

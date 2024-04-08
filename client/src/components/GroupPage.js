@@ -47,6 +47,7 @@ const GroupPage = () => {
     try {
       const { data } = await instance.post("/group/getGroupData", {
         groupId: id,
+        email: user.email
       });
       if (data.success) {
         console.log("groupdata:", data.groupData);

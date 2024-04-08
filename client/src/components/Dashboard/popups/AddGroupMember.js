@@ -48,9 +48,11 @@ const AddGroupMember = (props) => {
                   groupName: groupData.name,
                 })
                 .then((resp) => {
+                  console.log("result", resp);
                   if (resp.data.success) {
-                    dispatch(addToGroup(resp.data.member));
-                  } else {
+                    dispatch(addToGroup(member));
+                    alert("Added successfully");
+                  } else {   
                     alert("Failed to add member");
                     console.log("user not found");
                   }
@@ -58,6 +60,8 @@ const AddGroupMember = (props) => {
                 .catch((err) => {
                   alert("Failed to add member");
                   console.log(err);
+                }).finally(()=>{
+                  props?.onClickHandler()
                 });
             }}
           >

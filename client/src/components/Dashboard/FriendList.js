@@ -6,9 +6,9 @@ const FriendList = () => {
   const friends = Object.keys(user.friends ?? {});
   return friends.length ? (
     <ul>
-      {friends.map((value) => (
-        <li className="friendlist">
-          <i class="fas fa-user" />
+      {friends.map((value, index) => (
+        <li key={index} className="friendlist">
+          <i className="fas fa-user" />
           <span>{value}</span>
         </li>
       ))}

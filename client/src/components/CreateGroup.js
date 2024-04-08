@@ -56,7 +56,7 @@ const CreateGroup = ({ friend }) => {
     >
       <div
         style={{
-          backgroundColor: "#fff",
+          backgroundColor: "#1B262C",
           padding: 20,
           borderRadius: 5,
           boxShadow: "0 2px 8px rgba(0, 0, 0, 0.3)",
@@ -97,7 +97,7 @@ const CreateGroup = ({ friend }) => {
           >
             <input
               style={{
-                backgroundColor: "#f0f0f0",
+                backgroundColor: "#1B262C",
                 border: "1px solid #ccc",
                 borderRadius: "5px",
                 padding: "5px 10px",
@@ -106,6 +106,7 @@ const CreateGroup = ({ friend }) => {
                 cursor: "pointer",
                 height: "full",
                 overflowY: "auto",
+                color:"white"
               }}
               className="groupName"
               value={groupName}
@@ -127,7 +128,7 @@ const CreateGroup = ({ friend }) => {
                 <span>{suggestion.username}</span>
               )}
               style={{
-                backgroundColor: "#f0f0f0",
+                backgroundColor: "#1B262C",
                 border: "1px solid #ccc",
                 borderRadius: "5px",
                 padding: "5px 10px",
@@ -146,16 +147,17 @@ const CreateGroup = ({ friend }) => {
                 border: "1px solid #ccc",
                 borderRadius: "5px",
                 boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
-                backgroundColor: "#fff",
+                backgroundColor: "#1B262C",
                 maxHeight: 200,
                 overflowY: "auto",
+                color:"black"
               }}
               suggestionStyle={{
                 padding: "5px 10px",
                 cursor: "pointer",
               }}
               suggestionHighlightedStyle={{
-                backgroundColor: "#f0f0f0",
+                backgroundColor: "#1B262C",
               }}
             />
             <button

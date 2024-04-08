@@ -18,10 +18,9 @@ export const App = () => {
         <Route path="/" element={<Landing />}></Route>
         <Route exact path="/login" element={<Login_smart />}></Route>
         <Route exact path="/signup" element={<SignUp />}></Route>
-        <React.Fragment>
-        {/* <AuthComponent /> */}
-        <Route path="/dashboard/*" element={<Dashboard />} />
-        </React.Fragment>
+        <Route path="/" element={<AuthComponent/>}> 
+            <Route path="dashboard/*" element={<Dashboard />} />
+        </Route>
       </Routes>
     </div>
   );

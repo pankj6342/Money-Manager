@@ -28,7 +28,7 @@ export const Landing = () => {
             </Link>
           </div>
 
-          <div className="landing-feature">
+          {/* <div className="landing-feature">
             <div>
               <img
                 className="landing-img"
@@ -36,7 +36,7 @@ export const Landing = () => {
                 alt=""
               />
             </div>
-            <div className="landing-content">
+            {/* <div className="landing-content">
               <h3>
                 Friends Don't Let Friends Math – The App that Turns Bill
                 Splitting into a Stand-Up Act
@@ -55,8 +55,8 @@ export const Landing = () => {
                   summary on your Dashboard
                 </li>
               </ul>
-            </div>
-          </div>
+            </div>   
+          </div> */}
         </main>
       </div>
     </>

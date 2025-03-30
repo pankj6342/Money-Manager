@@ -52,6 +52,7 @@ const CreateGroup = ({ friend }) => {
         width: "100vw",
         height: "100vh",
         background: "rgba(0, 0, 0, 0.5)",
+        zIndex: 10,
       }}
     >
       <div
@@ -125,7 +126,7 @@ const CreateGroup = ({ friend }) => {
               }}
               suggestions={Object.keys(user.friends)}
               suggestionRenderer={(suggestion) => (
-                <span>{suggestion.username}</span>
+                <span color="black">{suggestion.username}</span>
               )}
               style={{
                 backgroundColor: "#1B262C",
@@ -155,6 +156,7 @@ const CreateGroup = ({ friend }) => {
               suggestionStyle={{
                 padding: "5px 10px",
                 cursor: "pointer",
+                color:"black"
               }}
               suggestionHighlightedStyle={{
                 backgroundColor: "#1B262C",
